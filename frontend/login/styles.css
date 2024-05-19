@@ -1,0 +1,139 @@
+@font-face {
+    font-family: 'Lato-Regular';
+    src: url('/frontend/fonts/Lato/Lato-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Satisfy-Regular';
+    src: url('/frontend/fonts/Satisfy/Satisfy-Regular.ttf') format('truetype');
+}
+
+
+body {
+    font-family: Lato-Regular, serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f5fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.logincontainer {
+    background-color: #fafafa;
+    border-radius: 1.5625vw;
+    width: 31.25vw;
+    height: 66.67vh;
+}
+
+.logincontainer h1 {
+    margin-top: 5.56vh;
+    margin-bottom: 8.33vh;
+    text-align: center;
+    font-size: 2.08vw;
+    color: #1e1e1e;
+    font-family: Satisfy-Regular, sans-serif;
+}
+
+#loginform {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#loginform input[type="email"] {
+    background-color: #ffffff;
+    width: 25vw;
+    height: 5.56vh;
+    border-radius: 0.8vw;
+    border: 0;
+    text-indent: 0.52vw;
+    color: #5b5b5b;
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;;
+    margin-bottom: 2.78vh;
+}
+
+#loginform input[type="email"]::placeholder {
+    color: #5b5b5b;
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;;
+}
+
+
+#loginform input[type="password"] {
+    background-color: #ffffff;
+    width: 25vw;
+    height: 5.56vh;
+    border-radius: 0.8vw;
+    border: none;
+    text-indent: 0.52vw;
+    color: #5b5b5b;
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;
+    margin-bottom: 8.33vh;
+}
+
+#loginform input[type="password"]::placeholder {
+    color: #5b5b5b;
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;;
+}
+
+#loginform button {
+    background-color: #5b5b5b;
+    width: 25vw;
+    height: 5.56vh;
+    border-radius: 0.8vw;
+    border: 0;
+    text-align: center;
+    color: #fafafa;
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 4.16vh;
+}
+
+#loginform button:hover {
+    background-color: #2e2e2e;
+}
+
+.type1 {
+    text-align: center;
+    font-size: 0.89vw;
+    color: #5b5b5b;
+    font-family: Lato-Regular, sans-serif;;
+    margin-bottom: 4.16vh;
+}
+
+.type2 {
+    text-align: center;
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;
+    margin-bottom: 5.56vh;
+}
+
+.colo1 {
+    color: #5b5b5b;
+}
+
+.color2 {
+    color: #2e2e2e;
+    font-weight: bold;
+}
+
+.signup {
+    color: #2e2e2e;
+    text-decoration: none;
+}
+
+#error {
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;
+    color: #620000;
+}
+
+
