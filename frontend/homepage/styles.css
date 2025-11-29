@@ -1,0 +1,601 @@
+@font-face {
+    font-family: 'Lato-Regular';
+    src: url('/frontend/fonts/Lato/Lato-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Satisfy-Regular';
+    src: url('/frontend/fonts/Satisfy/Satisfy-Regular.ttf') format('truetype');
+}
+
+body {
+    font-family: Lato-Regular, serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f5fa;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+h1 {
+    margin-top: 5.56vh;
+    margin-left: 3.125vw;
+    font-size: 2.86vw;
+    color: #1e1e1e;
+    font-family: Satisfy-Regular, sans-serif;
+}
+
+.icons {
+    display: flex;
+    flex-direction: column;
+}
+
+.homeicon img {
+    width: 3.125vw;
+    height: 5.56vh;
+    margin-left: 3.125vw;
+}
+
+.statisticsicon img {
+    width: 2.6vw;
+    height: 4.63vh;
+    margin-top: 5.56vh;
+    margin-left: 3.125vw;
+}
+
+.profileicon img {
+    width: 3.125vw;
+    height: 5.56vh;
+    margin-top: 5.56vh;
+    margin-left: 3.125vw;
+}
+
+.mainpagecontainer {
+    background-color: #fafafa;
+    border-radius: 2.6vw;
+    width: 85.9375vw;
+    height: 77.78vh;
+    margin-right: 4.6875vw;
+    margin-bottom: 8.33vh;
+    margin-top: 13.89vh;
+    display: flex;
+}
+
+.balance_icon {
+    display: flex;
+    flex-direction: column;
+}
+
+.balance {
+    background-color: #2e2e2e;
+    width: 34.375vw;
+    height: 27.78vh;
+    margin-top: 8.33vh;
+    margin-left: 4.6875vw;
+    border-radius: 2.6vw;
+}
+
+.balance h2 {
+    margin-top: 2.31vh;
+    margin-left: 1.5625vw;
+    font-size: 1.5625vw;
+    color: #fafafa;
+    font-family: Lato-Regular, sans-serif;
+    font-weight: bold;
+}
+
+.balance h3 {
+    text-align: center;
+    font-size: 2.6vw;
+    color: #fafafa;
+    font-family: Lato-Regular, sans-serif;
+}
+
+.buttons {
+    display: flex;
+    margin-top: 5.56vh;
+}
+
+.income {
+    background-color: #5b5b5b;
+    width: 15.625vw;
+    height: 27.78vh;
+    margin-left: 4.6875vw;
+    margin-right: 3.125vw;
+    border-radius: 2.6vw;
+}
+
+.income h2 {
+    text-align: center;
+    font-size: 1.5625vw;
+    color: #fafafa;
+    font-weight: bold;
+}
+
+.income button {
+    background-color: #5b5b5b;
+    width: 3.125vw;
+    height: 5.56vh;
+    margin-left: 6.25vw;
+    border: 0;
+    text-align: center;
+    color: #fafafa;
+    font-size: 4.792vw;
+    font-family: Lato-Regular, sans-serif;;
+    border: none;
+    cursor: pointer;
+}
+
+.expenses {
+    background-color: #5b5b5b;
+    width: 15.625vw;
+    height: 27.78vh;
+    border-radius: 2.6vw;
+}
+
+.expenses h2 {
+    text-align: center;
+    font-size: 1.5625vw;
+    color: #fafafa;
+    font-weight: bold;
+}
+
+.expenses button {
+    background-color: #5b5b5b;
+    width: 3.125vw;
+    height: 5.56vh;
+    margin-left: 6.25vw;
+    border: 0;
+    text-align: center;
+    color: #fafafa;
+    font-size: 4.792vw;
+    font-family: Lato-Regular, sans-serif;;
+    border: none;
+    cursor: pointer;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.modal-content {
+    background-color: #fafafa;
+    border: 1px solid #e3e3e3;
+    height: 50vh;
+    width: 25vw;
+    border-radius: 2.6vw;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.modal-content h1 {
+    font-family: Lato-Regular, sans-serif;
+    text-align: center;
+    margin-top: 4.16vh;
+    margin-left: 0;
+    font-size: 1.5625vw;
+    color: #1e1e1e;
+
+}
+
+#incomeamount  {
+    background-color: #ffffff;
+    width: 21.875vw;
+    height: 4.16vh;
+    border-radius: 0.52vw;
+    border: none;
+    text-indent: 0.52vw;
+    color: #5b5b5b;
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;
+    margin-left: 1.5625vw;
+    margin-top: 10.4629vh;
+}
+
+#incomeamount::placeholder {
+    color: #5b5b5b;
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;;
+}
+
+#incomedate  {
+    background-color: #ffffff;
+    width: 21.875vw;
+    height: 4.16vh;
+    border-radius: 0.52vw;
+    border: none;
+    text-indent: 0.10416vw;
+    color: #5b5b5b;
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;
+    margin-left: 1.5625vw;
+    margin-top: 2.78vh;
+}
+
+#incomedate::placeholder {
+    color: #5b5b5b;
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;;
+}
+
+#expensesamount  {
+    background-color: #ffffff;
+    width: 21.875vw;
+    height: 4.16vh;
+    border-radius: 0.52vw;
+    border: none;
+    text-indent: 0.52vw;
+    color: #5b5b5b;
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;
+    margin-left: 1.5625vw;
+    margin-top: 6.944vh;
+}
+
+#expensesamount::placeholder {
+    color: #5b5b5b;
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;;
+}
+
+#expensesdate  {
+    background-color: #ffffff;
+    width: 21.875vw;
+    height: 4.16vh;
+    border-radius: 0.52vw;
+    border: none;
+    text-indent: 0.10416vw;
+    color: #5b5b5b;
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;
+    margin-left: 1.5625vw;
+    margin-top: 2.78vh;
+}
+
+#expensesdate::placeholder {
+    color: #5b5b5b;
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;
+}
+
+#expensescategory  {
+    background-color: #ffffff;
+    width: 21.875vw;
+    height: 4.16vh;
+    border-radius: 0.52vw;
+    border: none;
+    text-indent: 0.52vw;
+    color: #5b5b5b;
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;
+    margin-left: 1.5625vw;
+    margin-top: 2.78vh;
+    appearance: none;
+}
+
+#expensescategory::placeholder {
+    color: #5b5b5b;
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;;
+}
+
+#incomebutton {
+    width: 9.375vw;
+    height: 4.16vh;
+    background-color: #5b5b5b;
+    color: #fafafa;
+    font-family: Lato-Regular, sans-serif;
+    font-size: 0.89vw;
+    border-radius: 0.52vw;
+    margin: 10.4629vh 1.5625vw 5.56vh 14.0625vw;
+}
+
+#incomebutton:hover {
+    background-color: #2e2e2e;
+}
+
+#expensesbutton {
+    width: 9.375vw;
+    height: 4.16vh;
+    background-color: #5b5b5b;
+    color: #fafafa;
+    font-family: Lato-Regular, sans-serif;
+    font-size: 0.89vw;
+    border-radius: 0.52vw;
+    margin: 6.944vh 1.5625vw 5.56vh 14.0625vw;
+}
+
+#expensesbutton:hover {
+    background-color: #2e2e2e;
+}
+
+.close {
+    color: #e3e3e3;
+    position: absolute;
+    top: 1.389vh;
+    right: 1.3vw;
+    font-size: 1.4583vw;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #1e1e1e;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.transaction {
+    margin: 5.278vh 4.6875vw 8.33vh 9.375vw;
+    height: 61.11vh;
+    width: 32.8125vw;
+}
+
+.transaction h2 {
+    font-size: 1.5625vw;
+    font-family: Lato-Regular, sans-serif;
+    font-weight: bold;
+    color: #2e2e2e;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    color: #2e2e2e;
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;
+    text-align: left;
+}
+td {
+    padding: 1.4941vw;
+    border-bottom: 4px solid #DCDFE2;
+    text-align: left;
+}
+
+#transactions-container {
+    max-height: 55.56vh;
+    overflow-y: auto;
+    margin-top: 3.24078vh;
+}
+
+.edit-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.edit-button img {
+    width: 0.729167vw;
+    height: 1.67vh;
+}
+
+.change-modal-content {
+    background-color: #fafafa;
+    border: 1px solid #e3e3e3;
+    height: 25vh;
+    width: 25vw;
+    border-radius: 2.6vw;
+    display: flex;
+    flex-direction: column;
+}
+
+#delete {
+    width: 18.75vw;
+    height: 5.56vh;
+    background-color: #5b5b5b;
+    color: #fafafa;
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;
+    margin-top: 5.56vh;
+    border-radius: 0.52vw;
+    margin-left: 3.125vw;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-left-width: 0;
+    border-bottom-width: 0;
+}
+
+#edit {
+    width: 18.75vw;
+    height: 5.56vh;
+    background-color: #5b5b5b;
+    color: #fafafa;
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;
+    margin-top: 2.78vh;
+    margin-bottom: 5.56vh;
+    border-radius: 0.52vw;
+    margin-left: 3.125vw;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-left-width: 0;
+    border-bottom-width: 0;
+}
+
+#delete:hover,
+#delete:focus {
+    background-color: #2e2e2e;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#edit:hover,
+#edit:focus {
+    background-color: #2e2e2e;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.expenses-content #edit-amount {
+    background-color: #ffffff;
+    width: 21.875vw;
+    height: 4.16vh;
+    border-radius: 0.52vw;
+    border: none;
+    text-indent: 0.52vw;
+    color: #5b5b5b;
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;
+    margin-left: 1.5625vw;
+    margin-top: 6.944vh;
+}
+
+.expenses-content #edit-date {
+    background-color: #ffffff;
+    width: 21.875vw;
+    height: 4.16vh;
+    border-radius: 0.52vw;
+    border: none;
+    text-indent: 0.10416vw;
+    color: #5b5b5b;
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;
+    margin-left: 1.5625vw;
+    margin-top: 2.78vh;
+}
+
+.expenses-content #edit-category {
+    background-color: #ffffff;
+    width: 21.875vw;
+    height: 4.16vh;
+    border-radius: 0.52vw;
+    border: none;
+    text-indent: 0.52vw;
+    color: #5b5b5b;
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;
+    margin-left: 1.5625vw;
+    margin-top: 2.78vh;
+    appearance: none;
+}
+
+.expenses-content #save-edit {
+    width: 9.375vw;
+    height: 4.16vh;
+    background-color: #5b5b5b;
+    color: #fafafa;
+    font-family: Lato-Regular, sans-serif;
+    font-size: 0.89vw;
+    border-radius: 0.52vw;
+    margin: 6.944vh 1.5625vw 4.16vh 14.0625vw;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-left-width: 0;
+    border-bottom-width: 0;
+}
+
+.income-content #edit-amount {
+    background-color: #ffffff;
+    width: 21.875vw;
+    height: 4.16vh;
+    border-radius: 0.52vw;
+    border: none;
+    text-indent: 0.52vw;
+    color: #5b5b5b;
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;
+    margin-left: 1.5625vw;
+    margin-top: 10.64814vh;
+}
+
+.income-content #edit-date {
+    background-color: #ffffff;
+    width: 21.875vw;
+    height: 4.16vh;
+    border-radius: 0.52vw;
+    border: none;
+    text-indent: 0.10416vw;
+    color: #5b5b5b;
+    font-size: 0.89vw;
+    font-family: Lato-Regular, sans-serif;
+    margin-left: 1.5625vw;
+    margin-top: 2.78vh;
+}
+
+.income-content #save-edit {
+    width: 9.375vw;
+    height: 4.16vh;
+    background-color: #5b5b5b;
+    color: #fafafa;
+    font-family: Lato-Regular, sans-serif;
+    font-size: 0.89vw;
+    border-radius: 0.52vw;
+    margin: 10.64814vh 1.5625vw 4.16vh 14.0625vw;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-left-width: 0;
+    border-bottom-width: 0;
+}
+
+#save-edit:hover,
+#save-edit:focus {
+    background-color: #2e2e2e;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.avatar-container {
+    width: 3.125vw;
+    height: 5.56vh;
+    border-radius: 50%;
+    border: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin-left: 93.1875vw;
+    margin-top: 5.56vh;
+}
+
+#avatar {
+    max-width: 3.125vw;
+    max-height: 5.56vh;
+    object-fit: cover;
+}
+
+.avatar-container img {
+    max-width: 130%;
+    max-height: 130%;
+    object-fit: cover;
+}
+
+.avataricon {
+    display: flex;
+    position: fixed;
+    z-index: 1;
+}
+
+.logout-popup {
+    display: none;
+    position: fixed;
+    top: 90px;
+    right: 90px;
+    padding: 10px;
+    background-color: #fafafa;
+    border: 1px solid #f2f5fa;
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.logout-popup button {
+    display: block;
+    background-color: #5b5b5b;
+    color: #fafafa;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: Lato-Regular, sans-serif;
+}
+
+.logout-popup button:hover {
+    background-color: #2e2e2e;
+}
