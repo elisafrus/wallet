@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'Lato-Regular';
-    src: url('/frontend/fonts/Lato/Lato-Regular.ttf') format('truetype');
+    src: url('/frontend/assets/fonts/Lato/Lato-Regular.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'Satisfy-Regular';
-    src: url('/frontend/fonts/Satisfy/Satisfy-Regular.ttf') format('truetype');
+    src: url('/frontend/assets/fonts/Satisfy/Satisfy-Regular.ttf') format('truetype');
 }
 
 

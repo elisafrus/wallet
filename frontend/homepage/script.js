@@ -107,7 +107,7 @@ window.addEventListener('load', () => {
                         <td>${transaction.category}</td>
                         <td>${formattedDate}</td>
                         <td>${transaction.amount}</td>
-                        <td><button class="edit-button"><img src="/frontend/elements/3dot_icon.png" alt="3dot icon"></button></td>
+                        <td><button class="edit-button"><img src="/frontend/assets/elements/3dot_icon.png" alt="3dot icon"></button></td>
                     `;
 
                     row.querySelector('.edit-button').addEventListener('click', () => {
