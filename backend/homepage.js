@@ -1,13 +1,13 @@
 const express = require('express');
 const homepageRouter = express.Router();
+const db = require('./db');
+
 const path = require('path');
 
-const db = require('./data');
-
-const { Users, Transactions, getNextTransactionId } = db;
-
 homepageRouter.use(express.static(path.join(__dirname, '..')));
+
 homepageRouter.use(express.static(path.join(__dirname, '..', 'frontend')));
+
 homepageRouter.use(express.static(path.join(__dirname, '..', 'frontend', 'homepage')));
 
 homepageRouter.get('/', (req, res) => {
@@ -19,166 +19,140 @@ homepageRouter.post('/income', (req, res) => {
   const { incomeamount, incomedate } = req.body;
   const user_id = req.session.user_id;
 
-  if (!user_id) {
-    return res.status(401).send('Unauthorized');
-  }
   if (!incomeamount || !incomedate) {
-    return res.status(400).send('Missing required fields');
+    res.status(400).send('Missing required fields');
+    return;
   }
 
-  const newTransaction = {
-    id: getNextTransactionId(),
-    user_id: user_id,
-    type: 'income',
-    amount: parseFloat(incomeamount),
-    date: incomedate,
-  };
-
-  Transactions.push(newTransaction);
-  res.redirect(req.get('referer'));
+  db.query('INSERT INTO income (amount, date, user_id) VALUES (?, ?, ?)', [incomeamount, incomedate, user_id], (err) => {
+    if (err) {
+      console.error('SQL error' + err.message);
+      res.status(500).send('Server error');
+      return;
+    }
+    res.redirect(req.get('referer'));
+  });
 });
 
 homepageRouter.post('/expenses', (req, res) => {
   const { expensesamount, expensesdate, expensescategory } = req.body;
   const user_id = req.session.user_id;
 
-  if (!user_id) {
-    return res.status(401).send('Unauthorized');
-  }
   if (!expensesamount || !expensesdate || !expensescategory) {
-    return res.status(400).send('Missing required fields');
+    res.status(400).send('Missing required fields');
+    return;
   }
 
-  const newTransaction = {
-    id: getNextTransactionId(),
-    user_id: user_id,
-    type: 'expenses',
-    amount: parseFloat(expensesamount),
-    date: expensesdate,
-    category: expensescategory,
-  };
-
-  Transactions.push(newTransaction);
-  res.redirect(req.get('referer'));
+  db.query('INSERT INTO expenses (amount, date, category, user_id) VALUES (?, ?, ?, ?)', [expensesamount, expensesdate, expensescategory, user_id], (err) => {
+    if (err) {
+      console.error('SQL error' + err.message);
+      res.status(500).send('Server error');
+      return;
+    }
+    res.redirect(req.get('referer'));
+  });
 });
 
 homepageRouter.get('/account-balance', (req, res) => {
   const user_id = req.session.user_id;
-  if (!user_id) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
 
-  const userTransactions = Transactions.filter(t => t.user_id === user_id);
-
-  // Розраховуємо суму
-  const income_sum = userTransactions
-    .filter(t => t.type === 'income')
-    .reduce((sum, t) => sum + t.amount, 0);
-
-  const expenses_sum = userTransactions
-    .filter(t => t.type === 'expenses')
-    .reduce((sum, t) => sum + t.amount, 0);
-
-  const value = income_sum - expenses_sum;
-
-  res.send(JSON.stringify({ value: value.toFixed(2) }));
+  return db.query(
+    `SELECT
+            (SELECT SUM(amount) FROM income WHERE user_id = ${user_id}) AS income_sum,
+            (SELECT SUM(amount) FROM expenses WHERE user_id = ${user_id}) AS expenses_sum`,
+    (error, rows) => {
+      const value = rows[0]['income_sum'] - rows[0]['expenses_sum'];
+      res.send(JSON.stringify({ value }));
+    }
+  );
 });
 
 homepageRouter.get('/recent-transactions', (req, res) => {
   const user_id = req.session.user_id;
-  if (!user_id) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-
-  const userTransactions = Transactions
-    .filter(t => t.user_id === user_id)
-    .map(t => ({
-      type: t.type,
-      category: t.category || null, // В income category буде null
-      date: t.date,
-      amount: t.amount,
-      id: t.id
-    }))
-
-    .sort((a, b) => {
-      const dateA = new Date(a.date);
-      const dateB = new Date(b.date);
-      if (dateA < dateB) return 1;
-      if (dateA > dateB) return -1;
-      return b.id - a.id;
-    });
-
-  res.send(JSON.stringify({ transactions: userTransactions }));
+  return db.query(
+    `SELECT * FROM (
+            (SELECT 'income' AS type, NULL AS category, date, amount, id FROM income WHERE user_id = ${user_id})
+            UNION ALL
+            (SELECT 'expenses' AS type, category, date, amount, id FROM expenses WHERE user_id = ${user_id})
+        ) AS transactions
+        ORDER BY date DESC, id DESC`,
+    (error, rows) => {
+      if (error) {
+        res.status(500).send(JSON.stringify({ error: "Server error" }));
+        return;
+      }
+      res.send(JSON.stringify({ transactions: rows }));
+    }
+  );
 });
 
-homepageRouter.delete('/transactions/:id/delete/:type', (req, res) => {
-  const transactionId = parseInt(req.params.id);
+homepageRouter.delete('/homepage/transactions/:id/delete/:type', (req, res) => {
+  const transactionId = req.params.id;
   const transactionType = req.params.type;
-  const user_id = req.session.user_id;
 
-  if (!user_id) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
+  let deleteTransactionQuery = '';
 
-  const initialLength = db.Transactions.length;
-
-  db.setTransactions(db.Transactions.filter(t =>
-    !(t.id === transactionId && t.type === transactionType && t.user_id === user_id)
-  ));
-
-  if (db.Transactions.length < initialLength) {
-    const message = transactionType === 'income'
-      ? 'Income transaction deleted successfully'
-      : 'Expenses transaction deleted successfully';
-    res.status(200).json({ message });
+  if (transactionType === 'income') {
+    deleteTransactionQuery = `DELETE FROM income WHERE id = ?`;
+  } else if (transactionType === 'expenses') {
+    deleteTransactionQuery = `DELETE FROM expenses WHERE id = ?`;
   } else {
-    res.status(404).json({ error: 'Transaction not found or unauthorized' });
+    res.status(400).json({ error: 'Incorrect type of transaction' });
+    return;
   }
+
+  db.query(deleteTransactionQuery, [transactionId], (error) => {
+    if (error) {
+      console.error('SQL error', error);
+      res.status(500).json({ error: 'Server error' });
+      return;
+    }
+
+    if (transactionType === 'income') {
+      res.status(200).json({ message: 'Income transaction deleted successfully' });
+    } else {
+      res.status(200).json({ message: 'Expenses transaction deleted successfully' });
+    }
+  });
 });
 
-function editIncomeTransaction(transactionId, newAmount, newDate, user_id) {
-  const transaction = Transactions.find(t => t.id === parseInt(transactionId) && t.type === 'income' && t.user_id === user_id);
-  if (transaction) {
-    transaction.amount = parseFloat(newAmount);
-    transaction.date = newDate;
-    return true;
-  }
-  return false;
+function editIncomeTransaction(transactionId, newAmount, newDate) {
+  return new Promise((resolve, reject) => {
+    const query = 'UPDATE income SET amount = ?, date = ? WHERE id = ?';
+    db.query(query, [newAmount, newDate, transactionId], (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
+  });
 }
 
-function editExpensesTransaction(transactionId, newAmount, newDate, newCategory, user_id) {
-  const transaction = Transactions.find(t => t.id === parseInt(transactionId) && t.type === 'expenses' && t.user_id === user_id);
-  if (transaction) {
-    transaction.amount = parseFloat(newAmount);
-    transaction.date = newDate;
-    transaction.category = newCategory;
-    return true;
-  }
-  return false;
+function editExpensesTransaction(transactionId, newAmount, newDate, newCategory) {
+  return new Promise((resolve, reject) => {
+    const query = 'UPDATE expenses SET amount = ?, date = ?, category = ? WHERE id = ?';
+    db.query(query, [newAmount, newDate, newCategory, transactionId], (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
+  });
 }
 
 homepageRouter.put('/homepage/transactions/:id/edit/:type', async (req, res) => {
   const { type, id } = req.params;
   const { amount, date, category } = req.body;
-  const user_id = req.session.user_id;
-
-  if (!user_id) {
-    return res.status(401).send('Unauthorized');
-  }
 
   try {
-    let success = false;
     if (type === 'income') {
-      success = editIncomeTransaction(id, amount, date, user_id);
+      await editIncomeTransaction(id, amount, date);
     } else if (type === 'expenses') {
-      success = editExpensesTransaction(id, amount, date, category, user_id);
+      await editExpensesTransaction(id, amount, date, category);
     }
-
-    if (success) {
-      res.status(200).send('Transaction edited successfully');
-    } else {
-      res.status(404).send('Transaction not found or unauthorized');
-    }
+    res.status(200).send('Transaction edited successfully');
   } catch (error) {
     console.error(error);
     res.status(500).send('Server error');
@@ -187,31 +161,31 @@ homepageRouter.put('/homepage/transactions/:id/edit/:type', async (req, res) => 
 
 homepageRouter.get('/homepage/avatar', (req, res) => {
   const user_id = req.session.user_id;
-  if (!user_id) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
+  const sql = 'SELECT avatar FROM users WHERE id = ?';
 
-  const user = Users.find(u => u.id === user_id);
+  db.query(sql, [user_id], (err, results) => {
+    if (err) {
+      console.error('SQL error', err);
+      res.status(500).json({ error: 'Server error' });
+      return;
+    }
+    if (results.length === 0) {
+      res.status(404).json({ error: 'Image not found' });
+      return;
+    }
 
-  if (!user) {
-    return res.status(404).json({ error: 'User not found' });
-  }
-
-  const avatarUrl = user.avatar;
-  if (!avatarUrl) {
-    return res.status(200).json({ avatarUrl: null });
-  }
-
-  res.json({ avatarUrl: avatarUrl });
+    const avatarUrl = results[0].avatar;
+    res.json({ avatarUrl: avatarUrl });
+  });
 });
 
 homepageRouter.get('/logout', (req, res) => {
+
   req.session.destroy((err) => {
     if (err) {
       console.log(err);
-      res.status(500).send('Could not log out.');
     } else {
-       res.redirect('/');
+      res.redirect('/');
     }
   });
 });

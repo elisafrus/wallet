@@ -1,9 +1,9 @@
 const express = require('express');
 const app = express();
+const routes = require('./routes');
 const path = require("path");
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const routes = require('./routes');
 const homepageRouter = require("./homepage");
 const statisticsRouter = require("./statistics");
 const profileRouter = require("./profile");
@@ -17,11 +17,13 @@ app.use(session({
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(express.static(path.join(__dirname, '..')));
-app.use(express.static(path.join(__dirname, '..', 'frontend')));
-app.use(express.static(path.join(__dirname, '..', 'frontend', 'welcome')));
-
 app.use('/', routes);
+
+app.use(express.static(path.join(__dirname, '..')));
+
+app.use(express.static(path.join(__dirname, '..', 'frontend')));
+
+app.use(express.static(path.join(__dirname, '..', 'frontend', 'welcome')));
 
 app.get('/', (req, res) => {
   const filePath = path.join(__dirname, '..', 'frontend', 'welcome', 'index.html');

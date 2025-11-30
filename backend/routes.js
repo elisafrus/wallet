@@ -14,8 +14,4 @@ router.use('/login', loginRouter);
 router.use('/homepage', homepageRouter);
 router.use('/statistics', statisticsRouter);
 
-router.get('/', (req, res) => {
-  res.redirect('/login');
-});
-
 module.exports = router;

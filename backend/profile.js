@@ -1,31 +1,20 @@
 const express = require('express');
 const profileRouter = express.Router();
-
-const { Users } = require('./data');
-
+const db = require('./db');
 const multer = require('multer');
 const bcrypt = require('bcrypt');
 const fs = require("fs");
+
 const path = require('path');
-
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadDir = path.join(__dirname, 'uploads');
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir);
-    }
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  }
-});
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 profileRouter.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 profileRouter.use(express.static(path.join(__dirname, '..')));
+
 profileRouter.use(express.static(path.join(__dirname, '..', 'frontend')));
+
 profileRouter.use(express.static(path.join(__dirname, '..', 'frontend', 'profile')));
 
 profileRouter.get('/', (req, res) => {
@@ -35,77 +24,68 @@ profileRouter.get('/', (req, res) => {
 
 profileRouter.get('/profile/user-info', (req, res) => {
   const user_id = req.session.user_id;
-
-  const user = Users.find(u => u.id === user_id);
-
-  if (!user) {
-    return res.status(404).send(JSON.stringify({ error: "User not found" }));
-  }
-
-  const userInfo = {
-    avatar: user.avatar,
-    fullname: user.fullname,
-    email: user.email,
-    password: user.password
-  };
-
-  res.send(JSON.stringify({ user_info: userInfo }));
+  return db.query(
+    `SELECT avatar, fullname, email, password FROM users WHERE id = ${user_id}`,
+    (error, rows) => {
+      if (error) {
+        res.status(500).send(JSON.stringify({ error: "Server error" }));
+        return;
+      }
+      res.send(JSON.stringify({ user_info: rows[0] }));
+    }
+  );
 });
 
 profileRouter.post('/update_profile', upload.single('avatar'), (req, res) => {
+
   const { fullname, email, password } = req.body;
   const user_id = req.session.user_id;
+  const hashedPassword = bcrypt.hashSync(password, 8);
 
-  const userIndex = Users.findIndex(u => u.id === user_id);
+  const avatar = req.file.buffer;
+  const filePath = `./uploads/${req.file.originalname}`;
 
-  if (userIndex === -1) {
-    return res.status(404).json({ message: 'User not found' });
-  }
+  fs.writeFileSync(filePath, avatar);
 
-  let avatarUrl = Users[userIndex].avatar; // Початковий аватар
+  const avatarUrl = `http://localhost:3000/${filePath}`;
 
-  Users[userIndex].fullname = fullname;
-  Users[userIndex].email = email;
-
-  if (password) {
-    const hashedPassword = bcrypt.hashSync(password, 8);
-    Users[userIndex].password = hashedPassword;
-  }
-
-  if (req.file) {
-    const filePath = `/uploads/${req.file.filename}`;
-    avatarUrl = `http://localhost:3000${filePath}`;
-    Users[userIndex].avatar = avatarUrl;
-  }
-
-  console.log(`User profile updated successfully (ID: ${user_id})`);
-  res.redirect('/profile');
+  db.query('UPDATE users SET fullname = ?, email = ?, password = ?, avatar = ? WHERE id = ?', [fullname, email, hashedPassword, avatarUrl, user_id], (error) => {
+    if (error) {
+      console.error('SQL error', error);
+      res.status(500).json({ message: 'Server error' });
+      return;
+    }
+    console.log('User profile updated successfully');
+    res.redirect('/profile');
+  });
 });
 
 profileRouter.get('/profile/avatar', (req, res) => {
   const user_id = req.session.user_id;
+  const sql = 'SELECT avatar FROM users WHERE id = ?';
 
-  const user = Users.find(u => u.id === user_id);
+  db.query(sql, [user_id], (err, results) => {
+    if (err) {
+      console.error('SQL error', err);
+      res.status(500).json({ error: 'Server error' });
+      return;
+    }
+    if (results.length === 0) {
+      res.status(404).json({ error: 'Image not found' });
+      return;
+    }
 
-  if (!user) {
-    res.status(404).json({ error: 'User not found' });
-    return;
-  }
+    const avatarUrl = results[0].avatar;
 
-  const avatarUrl = user.avatar;
-
-  if (!avatarUrl) {
-    res.status(404).json({ error: 'Image not found' });
-    return;
-  }
-
-  res.json({ avatarUrl: avatarUrl });
+    res.json({ avatarUrl: avatarUrl });
+  });
 });
 
 profileRouter.get('/logout', (req, res) => {
+
   req.session.destroy((err) => {
     if (err) {
-      console.error(err);
+      console.log(err);
     } else {
       res.redirect('/');
     }
