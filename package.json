@@ -4,12 +4,12 @@
   "description": "Веб-сайт ведення домашньої бухгалтерії",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo 'Tests successful (Placeholder)'",
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "checks": "npm run build && npm run test && npm run lint",
     "build": "echo 'Project build/compilation successful (Placeholder)'",
-    "test": "echo 'Tests successful (Placeholder)'"
+    "prepare": "husky"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -41,4 +41,3 @@
     "prettier": "^3.7.2"
   }
 }
-
