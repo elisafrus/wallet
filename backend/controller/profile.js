@@ -1,6 +1,7 @@
 const express = require('express');
 const profileRouter = express.Router();
-const db = require('./db');
+const db = require('../db');
+const userModel = require('../model/userModel');
 const multer = require('multer');
 const bcrypt = require('bcrypt');
 const fs = require("fs");
@@ -24,34 +25,39 @@ profileRouter.get('/', (req, res) => {
 
 profileRouter.get('/profile/user-info', (req, res) => {
   const user_id = req.session.user_id;
-  return db.query(
-    `SELECT avatar, fullname, email, password FROM users WHERE id = ${user_id}`,
-    (error, rows) => {
-      if (error) {
-        res.status(500).send(JSON.stringify({ error: "Server error" }));
-        return;
-      }
-      res.send(JSON.stringify({ user_info: rows[0] }));
+
+  userModel.getUserInfo(user_id, (error, userInfo) => {
+    if (error) {
+      console.error('Model error', error);
+      return res.status(500).send(JSON.stringify({ error: "Server error" }));
     }
-  );
+    if (!userInfo) {
+      return res.status(404).send(JSON.stringify({ error: "User not found" }));
+    }
+    res.send(JSON.stringify({ user_info: userInfo }));
+  });
 });
 
 profileRouter.post('/update_profile', upload.single('avatar'), (req, res) => {
-
   const { fullname, email, password } = req.body;
   const user_id = req.session.user_id;
+
   const hashedPassword = bcrypt.hashSync(password, 8);
 
-  const avatar = req.file.buffer;
-  const filePath = `./uploads/${req.file.originalname}`;
+  let avatarUrl = null;
 
-  fs.writeFileSync(filePath, avatar);
+  if (req.file) {
+    const avatar = req.file.buffer;
+    const fileName = path.basename(req.file.originalname);
+    const filePath = path.join(__dirname, 'uploads', fileName);
 
-  const avatarUrl = `http://localhost:3000/${filePath}`;
+    fs.writeFileSync(filePath, avatar);
+    avatarUrl = `http://localhost:3000/uploads/${fileName}`;
+  }
 
-  db.query('UPDATE users SET fullname = ?, email = ?, password = ?, avatar = ? WHERE id = ?', [fullname, email, hashedPassword, avatarUrl, user_id], (error) => {
+  userModel.updateUserProfile(user_id, fullname, email, hashedPassword, avatarUrl, (error) => {
     if (error) {
-      console.error('SQL error', error);
+      console.error('Model error', error);
       res.status(500).json({ message: 'Server error' });
       return;
     }
@@ -62,27 +68,21 @@ profileRouter.post('/update_profile', upload.single('avatar'), (req, res) => {
 
 profileRouter.get('/profile/avatar', (req, res) => {
   const user_id = req.session.user_id;
-  const sql = 'SELECT avatar FROM users WHERE id = ?';
 
-  db.query(sql, [user_id], (err, results) => {
+  userModel.getUserAvatar(user_id, (err, avatarUrl) => {
     if (err) {
-      console.error('SQL error', err);
-      res.status(500).json({ error: 'Server error' });
-      return;
+      console.error('Model error', err);
+      return res.status(500).json({ error: 'Server error' });
     }
-    if (results.length === 0) {
-      res.status(404).json({ error: 'Image not found' });
-      return;
+    if (!avatarUrl) {
+      return res.status(404).json({ error: 'Image not found' });
     }
-
-    const avatarUrl = results[0].avatar;
 
     res.json({ avatarUrl: avatarUrl });
   });
 });
 
 profileRouter.get('/logout', (req, res) => {
-
   req.session.destroy((err) => {
     if (err) {
       console.log(err);

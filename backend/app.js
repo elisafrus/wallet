@@ -1,12 +1,12 @@
 const express = require('express');
 const app = express();
-const routes = require('./routes');
+const routes = require('./controller/routes');
 const path = require("path");
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const homepageRouter = require("./homepage");
-const statisticsRouter = require("./statistics");
-const profileRouter = require("./profile");
+const homepageRouter = require("./controller/homepage");
+const statisticsRouter = require("./controller/statistics");
+const profileRouter = require("./controller/profile");
 
 app.use(session({
   secret: 'your_secret_key',

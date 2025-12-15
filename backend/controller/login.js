@@ -1,6 +1,7 @@
 const express = require('express');
 const loginRouter = express.Router();
-const db = require('./db');
+const db = require('../db');
+const userModel = require('../model/userModel');
 const bcrypt = require('bcrypt');
 
 const path = require('path');
@@ -23,20 +24,26 @@ loginRouter.post('/', (req, res) => {
     return res.status(400).json({ message: 'Please provide email and password' });
   }
 
-  db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
-    if (err) throw err;
+  userModel.findUserByEmail(email, (err, user) => {
+    if (err) {
+      console.error('Model error:', err);
+      return res.status(500).send('Server error');
+    }
 
-    if (results.length === 0) {
+    if (!user) {
       res.redirect('/login?Error=true')
       return;
     }
 
-    bcrypt.compare(password, results[0].password, (err, isMatch) => {
-      if (err) throw err;
+    bcrypt.compare(password, user.password, (err, isMatch) => {
+      if (err) {
+        console.error('Bcrypt error:', err);
+        return res.status(500).send('Server error');
+      }
 
       if (isMatch) {
         req.session.loggedin = true;
-        req.session.user_id = results[0].id;
+        req.session.user_id = user.id;
         res.redirect('/homepage');
       } else {
         res.redirect('/login?Error=true')

@@ -1,6 +1,6 @@
 const express = require('express');
 const signupRouter = express.Router();
-const db = require('./db');
+const db = require('../db');
 const bcrypt = require('bcrypt');
 
 const path = require('path');
@@ -18,9 +18,10 @@ signupRouter.get('/', (req, res) => {
 
 signupRouter.post('/', (req, res) => {
   const { fullname, email, password } = req.body;
+
   const hashedPassword = bcrypt.hashSync(password, 8);
 
-  db.query('INSERT INTO users (fullname, email, password) VALUES (?, ?, ?)', [fullname, email, hashedPassword], (err) => {
+  userModel.createUser(fullname, email, hashedPassword, (err) => {
     if (err) {
       console.error(err);
       res.redirect('/signup?Error=true')
