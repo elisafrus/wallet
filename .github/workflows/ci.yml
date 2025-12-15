@@ -1,0 +1,62 @@
+name: Continuous Integration
+
+on:
+  pull_request:  # Запускати при створенні або оновленні PR
+    branches: [ main, master ]
+  push:          # Запускати при коміті безпосередньо у гілку
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest  # Використовуємо віртуальну машину Ubuntu
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          # Для коректної перевірки commit history (Conventional Commits)
+          fetch-depth: 0
+
+      - name: Set up Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Використовуйте версію Node.js вашого проєкту
+
+      - name: Install Dependencies
+        run: npm install
+
+      # ---------------------------------------------
+      # 1. Перевірка форматування (Prettier)
+      # ---------------------------------------------
+      - name: Check Code Formatting
+        run: npx prettier --check .
+
+      # ---------------------------------------------
+      # 2. Перевірка Лінтінгу (ESLint)
+      # ---------------------------------------------
+      - name: Lint and Static Analysis (ESLint)
+        # Використовуємо 'npm run lint', який ви налаштували у ЛР №1
+        run: npm run lint
+
+      # ---------------------------------------------
+      # 3. Перевірка Збірки/Компіляції (""Збирається-билдиться"")
+      # ---------------------------------------------
+      - name: Run Build (Placeholder)
+        # Використовуємо скрипт 'npm run build', який має створювати фінальні артефакти
+        run: npm run build
+
+      # ---------------------------------------------
+      # 4. Запуск Тестів
+      # ---------------------------------------------
+      - name: Run Tests (Unit/Integration)
+        # Наразі, використовуємо стаб. У ЛР №5 тут буде 'npm run test'
+        run: npm run test
+
+      # ---------------------------------------------
+      # 5. Перевірка стилю комітів (Conventional Commits)
+      # ---------------------------------------------
+      - name: Validate Commit Messages
+        uses: wagoid/commitlint-github-action@v6
+        with:
+          # Використовує конфігурацію, яку ви маєте для Conventional Commits
+          configFile: .commitlintrc.json

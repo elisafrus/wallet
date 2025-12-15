@@ -1,0 +1,56 @@
+name: Continuous Deployment
+
+on:
+  push:
+    branches: [ main ] # Запускати лише при коміті в основну гілку (після злиття PR)
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # ---------------------------------------------
+      # 1. Збірка фінальних артефактів (за необхідності)
+      # ---------------------------------------------
+      - name: Install Dependencies and Build
+        run: |
+          npm install
+          npm run build # Фінальна збірка 
+
+      # ---------------------------------------------
+      # 2. Розгортання на Стейдж-сервері (Приклад: SSH + rsync)
+      # ---------------------------------------------
+      - name: Deploy via SSH and rsync
+        uses: easingthemes/ssh-deploy@main
+        with:
+          # Налаштування доступу до вашого стейдж-сервера
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.SERVER_HOST }}
+          REMOTE_USER: ${{ secrets.SERVER_USER }}
+
+          # Шляхи
+          SOURCE: './' # Відправляти всі файли з кореня проєкту
+          TARGET: '/var/www/wallet-staging-server/' # Папка на сервері
+
+      # ---------------------------------------------
+      # 3. Перезапуск сервісу на сервері
+      # ---------------------------------------------
+      - name: Restart Application Service (e.g., PM2 or systemd)
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          # Команда для перезапуску вашого застосунку (наприклад, використовуючи PM2)
+          script: |
+            cd /var/www/wallet-staging-server/
+            npm install --production # Встановлення лише production-залежностей
+            pm2 restart wallet-app # Замініть на ім'я вашого PM2 процесу
