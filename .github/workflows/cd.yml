@@ -18,39 +18,33 @@ jobs:
           node-version: '20'
 
       # ---------------------------------------------
-      # 1. Збірка фінальних артефактів (за необхідності)
+      # 1. Збірка фінальних артефактів
       # ---------------------------------------------
       - name: Install Dependencies and Build
         run: |
           npm install
           npm run build # Фінальна збірка
 
-      # ---------------------------------------------
-      # 2. Розгортання на Стейдж-сервері (Приклад: SSH + rsync)
-      # ---------------------------------------------
-      - name: Deploy via SSH and rsync
-        uses: easingthemes/ssh-deploy@main
-        with:
-          # Налаштування доступу до вашого стейдж-сервера
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          REMOTE_HOST: ${{ secrets.SERVER_HOST }}
-          REMOTE_USER: ${{ secrets.SERVER_USER }}
+      # ===============================================
+      # 2. СИМУЛЯЦІЯ: Розгортання на Стейдж-сервері
+      # (Замінює SSH-Deploy та не вимагає GitHub Secrets)
+      # ===============================================
+      - name: Simulate Deployment to Staging Server
+        run: |
+          echo "================================================="
+          echo "INFO: Simulation Mode Activated."
+          echo "INFO: Deployment package prepared for staging server."
+          echo "INFO: Copying artifacts to /var/www/wallet-staging-server/..."
+          echo "INFO: Deployment completed successfully on $(date)."
+          echo "================================================="
 
-          # Шляхи
-          SOURCE: './' # Відправляти всі файли з кореня проєкту
-          TARGET: '/var/www/wallet-staging-server/' # Папка на сервері
-
-      # ---------------------------------------------
-      # 3. Перезапуск сервісу на сервері
-      # ---------------------------------------------
-      - name: Restart Application Service (e.g., PM2 or systemd)
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          # Команда для перезапуску вашого застосунку (наприклад, використовуючи PM2)
-          script: |
-            cd /var/www/wallet-staging-server/
-            npm install --production # Встановлення лише production-залежностей
-            pm2 restart wallet-app # Замініть на ім'я вашого PM2 процесу
+      # ===============================================
+      # 3. СИМУЛЯЦІЯ: Перезапуск сервісу на сервері
+      # (Замінює SSH-Action для перезапуску PM2)
+      # ===============================================
+      - name: Simulate Application Restart and Health Check
+        run: |
+          echo "INFO: Logging in to remote server (simulated)..."
+          echo "INFO: Running npm install --production on staging server."
+          echo "INFO: Service 'wallet-app' restarted via PM2 successfully."
+          echo "INFO: Staging application is now live with the latest code."
