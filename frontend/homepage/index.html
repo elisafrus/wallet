@@ -1,113 +1,133 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Wallet</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-<div class="icons">
-    <h1>Wallet</h1>
-    <div class="homeicon">
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="icons">
+      <h1>Wallet</h1>
+      <div class="homeicon">
         <a href="/homepage">
-            <img src="/frontend/assets/elements/home_icon.png" alt="Home icon">
+          <img src="/frontend/assets/elements/home_icon.png" alt="Home icon" />
         </a>
-    </div>
-    <div class="statisticsicon">
+      </div>
+      <div class="statisticsicon">
         <a href="/statistics">
-            <img src="/frontend/assets/elements/statistics_icon.png" alt="Statistics icon">
+          <img src="/frontend/assets/elements/statistics_icon.png" alt="Statistics icon" />
         </a>
-    </div>
-    <div class="profileicon">
+      </div>
+      <div class="profileicon">
         <a href="/profile">
-            <img src="/frontend/assets/elements/profile_icon.png" alt="Profile icon">
+          <img src="/frontend/assets/elements/profile_icon.png" alt="Profile icon" />
         </a>
+      </div>
     </div>
-</div>
-<div class="mainpagecontainer">
-    <div class="balance_icon">
+    <div class="mainpagecontainer">
+      <div class="balance_icon">
         <div class="balance">
-            <h2>Balance</h2>
-            <h3 id="balance-value"></h3>
+          <h2>Balance</h2>
+          <h3 id="balance-value"></h3>
         </div>
         <div class="buttons">
-            <div class="income">
-                <h2>Income</h2>
-                <button id="openModal1">+</button>
-                <div id="myModal1" class="modal">
-                    <form class="modal-content" action="/income" method="post">
-                        <span class="close">&times;</span>
-                        <h1>Income</h1>
-                        <input type="text" name="incomeamount" id="incomeamount" placeholder="amount" required>
-                        <input type="date" name="incomedate" id="incomedate" placeholder="date" required>
-                        <button type="submit" name="incomebutton" id="incomebutton">Add</button>
-                    </form>
-                </div>
+          <div class="income">
+            <h2>Income</h2>
+            <button id="openModal1">+</button>
+            <div id="myModal1" class="modal">
+              <form class="modal-content" action="/income" method="post">
+                <span class="close">&times;</span>
+                <h1>Income</h1>
+                <input
+                  type="text"
+                  name="incomeamount"
+                  id="incomeamount"
+                  placeholder="amount"
+                  required
+                />
+                <input type="date" name="incomedate" id="incomedate" placeholder="date" required />
+                <button type="submit" name="incomebutton" id="incomebutton">Add</button>
+              </form>
             </div>
-            <div class="expenses">
-                <h2>Expenses</h2>
-                <button id="openModal2">+</button>
-                <div id="myModal2" class="modal">
-                    <form class="modal-content" action="/expenses" method="post">
-                        <span class="close">&times;</span>
-                        <h1>Expenses</h1>
-                        <input type="text" name="expensesamount" id="expensesamount" placeholder="amount" required>
-                        <input type="date" name="expensesdate" id="expensesdate" placeholder="date" required>
-                        <select name="expensescategory" id="expensescategory" placeholder="category" required>
-                            <option value="category">category</option>
-                            <option value="food and drinks">food and drinks</option>
-                            <option value="clothes and shoes">clothes and shoes</option>
-                            <option value="cafes and restaurants">cafes and restaurants</option>
-                            <option value="health and beauty">health and beauty</option>
-                            <option value="transport">transport</option>
-                            <option value="rent">rent</option>
-                            <option value="entertainment">entertainment</option>
-                            <option value="education">education</option>
-                            <option value="household goods">household goods</option>
-                            <option value="pets">pets</option>
-                            <option value="gifts and charity">gifts and charity</option>
-                            <option value="financial expenses">financial expenses</option>
-                            <option value="other">other</option>
-                        </select>
-                        <button type="submit" id="expensesbutton">Add</button>
-                    </form>
-                </div>
+          </div>
+          <div class="expenses">
+            <h2>Expenses</h2>
+            <button id="openModal2">+</button>
+            <div id="myModal2" class="modal">
+              <form class="modal-content" action="/expenses" method="post">
+                <span class="close">&times;</span>
+                <h1>Expenses</h1>
+                <input
+                  type="text"
+                  name="expensesamount"
+                  id="expensesamount"
+                  placeholder="amount"
+                  required
+                />
+                <input
+                  type="date"
+                  name="expensesdate"
+                  id="expensesdate"
+                  placeholder="date"
+                  required
+                />
+                <select
+                  name="expensescategory"
+                  id="expensescategory"
+                  placeholder="category"
+                  required
+                >
+                  <option value="category">category</option>
+                  <option value="food and drinks">food and drinks</option>
+                  <option value="clothes and shoes">clothes and shoes</option>
+                  <option value="cafes and restaurants">cafes and restaurants</option>
+                  <option value="health and beauty">health and beauty</option>
+                  <option value="transport">transport</option>
+                  <option value="rent">rent</option>
+                  <option value="entertainment">entertainment</option>
+                  <option value="education">education</option>
+                  <option value="household goods">household goods</option>
+                  <option value="pets">pets</option>
+                  <option value="gifts and charity">gifts and charity</option>
+                  <option value="financial expenses">financial expenses</option>
+                  <option value="other">other</option>
+                </select>
+                <button type="submit" id="expensesbutton">Add</button>
+              </form>
             </div>
+          </div>
         </div>
-    </div>
-    <div class="transaction">
+      </div>
+      <div class="transaction">
         <h2>Recent transaction</h2>
         <div id="transactions-container">
-            <table id="transactions-table">
-                </thead>
-                <tbody id="transactions-body"></tbody>
-            </table>
-            <div id="change" class="modal">
-                <form class="change-modal-content">
-                    <span class="close">&times;</span>
-                    <button type="submit" name="delete" id="delete">Delete</button>
-                    <button type="submit" name="edit" id="edit">Edit</button>
-                </form>
-            </div>
-            <div id="edit-modal" class="modal">
-                <div class="modal-content" id="edit-modal-content"></div>
-            </div>
+          <table id="transactions-table">
+            <thead></thead>
+            <tbody id="transactions-body"></tbody>
+          </table>
+          <div id="change" class="modal">
+            <form class="change-modal-content">
+              <span class="close">&times;</span>
+              <button type="submit" name="delete" id="delete">Delete</button>
+              <button type="submit" name="edit" id="edit">Edit</button>
+            </form>
+          </div>
+          <div id="edit-modal" class="modal">
+            <div class="modal-content" id="edit-modal-content"></div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-<div class="avataricon">
-    <div class="avatar-container">
-        <img id="user-avatar" alt="User Avatar">
+    <div class="avataricon">
+      <div class="avatar-container">
+        <img id="user-avatar" alt="User Avatar" />
+      </div>
     </div>
-</div>
-<div id="logout-popup" class="logout-popup">
-    <button id="logout-button">Log out</button>
-</div>
-<script src="script.js"></script>
-</body>
+    <div id="logout-popup" class="logout-popup">
+      <button id="logout-button">Log out</button>
+    </div>
+    <script src="script.js"></script>
+  </body>
 </html>
-
-
-

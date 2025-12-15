@@ -1,7 +1,6 @@
 const { test, expect } = require('@playwright/test');
 
 test('Повний цикл: Реєстрація -> Вхід -> Перевірка homepage', async ({ page }) => {
-
   await page.goto('http://localhost:3000/signup');
   await page.fill('input[name="fullname"]', 'Test User E2E');
   await page.fill('input[name="email"]', 'e2e_test@mail.com');

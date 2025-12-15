@@ -58,14 +58,19 @@ statisticsRouter.get('/expenses-by-category', (req, res) => {
   const user_id = req.session.user_id;
   const { startDate, endDate } = dateFilter;
 
-  transactionModel.getExpensesByCategory(user_id, startDate, endDate, (error, expensesByCategory) => {
-    if (error) {
-      console.error('Model error', error);
-      res.status(500).json({ error: 'Server error' });
-      return;
-    }
-    res.json({ expensesByCategory });
-  });
+  transactionModel.getExpensesByCategory(
+    user_id,
+    startDate,
+    endDate,
+    (error, expensesByCategory) => {
+      if (error) {
+        console.error('Model error', error);
+        res.status(500).json({ error: 'Server error' });
+        return;
+      }
+      res.json({ expensesByCategory });
+    },
+  );
 });
 
 statisticsRouter.get('/expenses-list-by-category/:category', (req, res) => {
@@ -73,14 +78,20 @@ statisticsRouter.get('/expenses-list-by-category/:category', (req, res) => {
   const category = req.params.category;
   const { startDate, endDate } = dateFilter;
 
-  transactionModel.getExpensesListByCategory(user_id, category, startDate, endDate, (error, expensesListByCategory) => {
-    if (error) {
-      console.error('Model error', error);
-      res.status(500).json({ error: 'Server error' });
-      return;
-    }
-    res.json({ expensesListByCategory });
-  });
+  transactionModel.getExpensesListByCategory(
+    user_id,
+    category,
+    startDate,
+    endDate,
+    (error, expensesListByCategory) => {
+      if (error) {
+        console.error('Model error', error);
+        res.status(500).json({ error: 'Server error' });
+        return;
+      }
+      res.json({ expensesListByCategory });
+    },
+  );
 });
 
 statisticsRouter.get('/expenses-by-date', (req, res) => {
@@ -96,7 +107,6 @@ statisticsRouter.get('/expenses-by-date', (req, res) => {
     res.json({ expensesByDate });
   });
 });
-
 
 statisticsRouter.get('/income-by-date', (req, res) => {
   const user_id = req.session.user_id;

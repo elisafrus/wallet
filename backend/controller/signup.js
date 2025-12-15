@@ -24,7 +24,7 @@ signupRouter.post('/', (req, res) => {
   userModel.createUser(fullname, email, hashedPassword, (err) => {
     if (err) {
       console.error(err);
-      res.redirect('/signup?Error=true')
+      res.redirect('/signup?Error=true');
     } else {
       res.redirect('/login');
     }

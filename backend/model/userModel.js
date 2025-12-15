@@ -41,7 +41,7 @@ const userModel = {
   createUser: (fullname, email, hashedPassword, callback) => {
     const query = 'INSERT INTO users (fullname, email, password) VALUES (?, ?, ?)';
     db.query(query, [fullname, email, hashedPassword], callback);
-  }
+  },
 };
 
 module.exports = userModel;

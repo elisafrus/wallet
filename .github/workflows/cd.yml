@@ -2,7 +2,7 @@ name: Continuous Deployment
 
 on:
   push:
-    branches: [ main ] # Запускати лише при коміті в основну гілку (після злиття PR)
+    branches: [main] # Запускати лише при коміті в основну гілку (після злиття PR)
 
 jobs:
   deploy:
@@ -23,7 +23,7 @@ jobs:
       - name: Install Dependencies and Build
         run: |
           npm install
-          npm run build # Фінальна збірка 
+          npm run build # Фінальна збірка
 
       # ---------------------------------------------
       # 2. Розгортання на Стейдж-сервері (Приклад: SSH + rsync)

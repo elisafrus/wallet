@@ -4,7 +4,7 @@ const db = require('../db');
 const userModel = require('../model/userModel');
 const multer = require('multer');
 const bcrypt = require('bcrypt');
-const fs = require("fs");
+const fs = require('fs');
 
 const path = require('path');
 const storage = multer.memoryStorage();
@@ -29,10 +29,10 @@ profileRouter.get('/profile/user-info', (req, res) => {
   userModel.getUserInfo(user_id, (error, userInfo) => {
     if (error) {
       console.error('Model error', error);
-      return res.status(500).send(JSON.stringify({ error: "Server error" }));
+      return res.status(500).send(JSON.stringify({ error: 'Server error' }));
     }
     if (!userInfo) {
-      return res.status(404).send(JSON.stringify({ error: "User not found" }));
+      return res.status(404).send(JSON.stringify({ error: 'User not found' }));
     }
     res.send(JSON.stringify({ user_info: userInfo }));
   });

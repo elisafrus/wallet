@@ -70,7 +70,8 @@ const transactionModel = {
     return new Promise((resolve, reject) => {
       const query = 'UPDATE income SET amount = ?, date = ? WHERE id = ?';
       db.query(query, [amount, date, id], (error, results) => {
-        if (error) reject(error); else resolve(results);
+        if (error) reject(error);
+        else resolve(results);
       });
     });
   },
@@ -79,7 +80,8 @@ const transactionModel = {
     return new Promise((resolve, reject) => {
       const query = 'UPDATE expenses SET amount = ?, date = ?, category = ? WHERE id = ?';
       db.query(query, [amount, date, category, id], (error, results) => {
-        if (error) reject(error); else resolve(results);
+        if (error) reject(error);
+        else resolve(results);
       });
     });
   },
@@ -111,10 +113,12 @@ const transactionModel = {
     query += ' GROUP BY category';
 
     db.query(query, params, (error, rows) => {
-      const expensesByCategory = rows ? rows.map(row => ({
-        category: row.category,
-        total_amount: row.total_amount
-      })) : [];
+      const expensesByCategory = rows
+        ? rows.map((row) => ({
+            category: row.category,
+            total_amount: row.total_amount,
+          }))
+        : [];
       callback(error, expensesByCategory);
     });
   },
@@ -129,10 +133,12 @@ const transactionModel = {
     }
 
     db.query(query, params, (error, rows) => {
-      const expensesList = rows ? rows.map(row => ({
-        amount: row.amount,
-        date: row.date
-      })) : [];
+      const expensesList = rows
+        ? rows.map((row) => ({
+            amount: row.amount,
+            date: row.date,
+          }))
+        : [];
       callback(error, expensesList);
     });
   },
@@ -144,11 +150,13 @@ const transactionModel = {
     query += ' GROUP BY YEAR(date), MONTH(date) ORDER BY year, month';
 
     db.query(query, params, (error, rows) => {
-      const expensesByDate = rows ? rows.map(row => ({
-        year: row.year,
-        month: row.month,
-        total_month_amount: row.total_month_amount
-      })) : [];
+      const expensesByDate = rows
+        ? rows.map((row) => ({
+            year: row.year,
+            month: row.month,
+            total_month_amount: row.total_month_amount,
+          }))
+        : [];
       callback(error, expensesByDate);
     });
   },
@@ -160,16 +168,16 @@ const transactionModel = {
     query += ' GROUP BY YEAR(date), MONTH(date) ORDER BY year, month';
 
     db.query(query, params, (error, rows) => {
-      const incomeByDate = rows ? rows.map(row => ({
-        year: row.year,
-        month: row.month,
-        total_month_amount: row.total_month_amount
-      })) : [];
+      const incomeByDate = rows
+        ? rows.map((row) => ({
+            year: row.year,
+            month: row.month,
+            total_month_amount: row.total_month_amount,
+          }))
+        : [];
       callback(error, incomeByDate);
     });
-  }
+  },
 };
-
-
 
 module.exports = transactionModel;

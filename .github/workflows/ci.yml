@@ -1,14 +1,14 @@
 name: Continuous Integration
 
 on:
-  pull_request:  # Запускати при створенні або оновленні PR
-    branches: [ main, master ]
-  push:          # Запускати при коміті безпосередньо у гілку
-    branches: [ main, master ]
+  pull_request: # Запускати при створенні або оновленні PR
+    branches: [main, master]
+  push: # Запускати при коміті безпосередньо у гілку
+    branches: [main, master]
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest  # Використовуємо віртуальну машину Ubuntu
+    runs-on: ubuntu-latest # Використовуємо віртуальну машину Ubuntu
 
     steps:
       - name: Checkout Code

@@ -1,85 +1,84 @@
 @font-face {
-    font-family: 'Lato-Regular';
-    src: url('/frontend/assets/fonts/Lato/Lato-Regular.ttf') format('truetype');
+  font-family: 'Lato-Regular';
+  src: url('/frontend/assets/fonts/Lato/Lato-Regular.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: 'Satisfy-Regular';
-    src: url('/frontend/assets/fonts/Satisfy/Satisfy-Regular.ttf') format('truetype');
+  font-family: 'Satisfy-Regular';
+  src: url('/frontend/assets/fonts/Satisfy/Satisfy-Regular.ttf') format('truetype');
 }
 
-
 body {
-    font-family: Lato-Regular, serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f2f5fa;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100vw;
-    height: 100vh;
+  font-family: Lato-Regular, serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f2f5fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
 }
 
 .welcomecontainer {
-    background-color: #fafafa;
-    border-radius: 2.6vw;
-    width: 87.5vw;
-    height: 77.78vh;
+  background-color: #fafafa;
+  border-radius: 2.6vw;
+  width: 87.5vw;
+  height: 77.78vh;
 }
 
 .welcomecontainer h1 {
-    margin-top: 25vh;
-    margin-bottom: 0;
-    text-align: center;
-    font-size: 3.65vw;
-    color: #1e1e1e;
-    font-family: Satisfy-Regular, sans-serif;
+  margin-top: 25vh;
+  margin-bottom: 0;
+  text-align: center;
+  font-size: 3.65vw;
+  color: #1e1e1e;
+  font-family: Satisfy-Regular, sans-serif;
 }
 
 .welcomecontainer p {
-    margin-top: 0;
-    text-align: center;
-    font-size: 1.3vw;
-    color: #2e2e2e;
-    font-family: Lato-Regular, sans-serif;
+  margin-top: 0;
+  text-align: center;
+  font-size: 1.3vw;
+  color: #2e2e2e;
+  font-family: Lato-Regular, sans-serif;
 }
 
 .buttons #login {
-    background-color: #5b5b5b;
-    width: 25vw;
-    height: 8.33vh;
-    border-radius: 0.8vw;
-    border: 0;
-    text-align: center;
-    color: #fafafa;
-    font-size: 1.3vw;
-    font-family: Lato-Regular, sans-serif;;
-    border: none;
-    cursor: pointer;
-    margin: 4.16vh 3.125vw 25vh 17.1875vw;
+  background-color: #5b5b5b;
+  width: 25vw;
+  height: 8.33vh;
+  border-radius: 0.8vw;
+  border: 0;
+  text-align: center;
+  color: #fafafa;
+  font-size: 1.3vw;
+  font-family: Lato-Regular, sans-serif;
+  border: none;
+  cursor: pointer;
+  margin: 4.16vh 3.125vw 25vh 17.1875vw;
 }
 
 .buttons #login:hover {
-    background-color: #2e2e2e;
+  background-color: #2e2e2e;
 }
 
 .buttons #signup {
-    background-color: #5b5b5b;
-    width: 25vw;
-    height: 8.33vh;
-    border-radius: 0.8vw;
-    border: 0;
-    text-align: center;
-    color: #fafafa;
-    font-size: 1.3vw;
-    font-family: Lato-Regular, sans-serif;;
-    border: none;
-    cursor: pointer;
-    margin-top: 4.16vh;
-    margin-bottom: 25vh;
+  background-color: #5b5b5b;
+  width: 25vw;
+  height: 8.33vh;
+  border-radius: 0.8vw;
+  border: 0;
+  text-align: center;
+  color: #fafafa;
+  font-size: 1.3vw;
+  font-family: Lato-Regular, sans-serif;
+  border: none;
+  cursor: pointer;
+  margin-top: 4.16vh;
+  margin-bottom: 25vh;
 }
 
 .buttons #signup:hover {
-    background-color: #2e2e2e;
+  background-color: #2e2e2e;
 }

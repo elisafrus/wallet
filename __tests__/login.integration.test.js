@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../backend/app');
-const db = require('../backend/db'); 
+const db = require('../backend/db');
 
 describe('POST /login', () => {
   beforeEach(() => {

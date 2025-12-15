@@ -61,7 +61,7 @@ homepageRouter.get('/account-balance', (req, res) => {
   transactionModel.getAccountBalance(user_id, (error, balance) => {
     if (error) {
       console.error('Model error:', error);
-      return res.status(500).send(JSON.stringify({ error: "Server error" }));
+      return res.status(500).send(JSON.stringify({ error: 'Server error' }));
     }
     res.send(JSON.stringify({ value: balance }));
   });
@@ -73,7 +73,7 @@ homepageRouter.get('/recent-transactions', (req, res) => {
   transactionModel.getRecentTransactions(user_id, (error, transactions) => {
     if (error) {
       console.error('Model error:', error);
-      res.status(500).send(JSON.stringify({ error: "Server error" }));
+      res.status(500).send(JSON.stringify({ error: 'Server error' }));
       return;
     }
     res.send(JSON.stringify({ transactions: transactions }));

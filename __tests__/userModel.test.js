@@ -14,7 +14,7 @@ describe('userModel', () => {
       callback(null, mockUser);
     });
 
-    await new Promise(resolve => {
+    await new Promise((resolve) => {
       userModel.findUserByEmail('test@mail.com', (err, user) => {
         expect(err).toBeNull();
         expect(user).toEqual(mockUser[0]);
@@ -22,7 +22,7 @@ describe('userModel', () => {
         expect(db.query).toHaveBeenCalledWith(
           expect.stringContaining('SELECT * FROM users'),
           ['test@mail.com'],
-          expect.any(Function)
+          expect.any(Function),
         );
         resolve();
       });
@@ -34,7 +34,7 @@ describe('userModel', () => {
       callback(null, []); // Порожній масив
     });
 
-    await new Promise(resolve => {
+    await new Promise((resolve) => {
       userModel.findUserByEmail('unknown@mail.com', (err, user) => {
         expect(err).toBeNull();
         expect(user).toBeNull();
