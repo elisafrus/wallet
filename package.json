@@ -4,7 +4,7 @@
   "description": "Веб-сайт ведення домашньої бухгалтерії",
   "main": "index.js",
   "scripts": {
-    "test": "jest --testPathIgnorePatterns='integration.test.js' --testPathIgnorePatterns='e2e.spec.js'",
+    "test": "jest --testPathPattern='unit'",
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "checks": "npm run build && npm run test && npm run lint",
