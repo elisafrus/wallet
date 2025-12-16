@@ -4,7 +4,7 @@
   "description": "Веб-сайт ведення домашньої бухгалтерії",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --testPathIgnorePatterns='integration.test.js' --testPathIgnorePatterns='e2e.spec.js'",
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "checks": "npm run build && npm run test && npm run lint",
@@ -31,6 +31,7 @@
   },
   "homepage": "https://github.com/elisafrus/wallet#readme",
   "devDependencies": {
+    "@playwright/test": "^1.57.0",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
     "eslint": "^8.57.1",
@@ -45,6 +46,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "express": "^5.2.1",
     "mysql": "^2.18.1"
   }
