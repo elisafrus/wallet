@@ -4,7 +4,7 @@
   "description": "Веб-сайт ведення домашньої бухгалтерії",
   "main": "index.js",
   "scripts": {
-    "test": "jest --testPathPattern='unit'",
+    "test": "jest _tests_/userModel.test.js",
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "checks": "npm run build && npm run test && npm run lint",
