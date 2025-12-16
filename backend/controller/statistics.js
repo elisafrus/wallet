@@ -1,6 +1,5 @@
 const express = require('express');
 const statisticsRouter = express.Router();
-const db = require('../db');
 const transactionModel = require('../model/transactionModel');
 const userModel = require('../model/userModel');
 

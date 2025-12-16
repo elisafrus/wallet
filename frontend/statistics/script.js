@@ -106,7 +106,7 @@ function updateDoughnutChart(data) {
     if (chartElement.length > 0) {
       const index = chartElement[0].index;
       const category = categories[index];
-      const amount = amounts[index];
+      //amount = amounts[index];
 
       fetch(`/expenses-list-by-category/${category}`)
         .then((response) => response.json())

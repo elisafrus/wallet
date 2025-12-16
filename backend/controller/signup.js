@@ -1,6 +1,6 @@
 const express = require('express');
 const signupRouter = express.Router();
-const db = require('../db');
+const userModel = require('../model/userModel');
 const bcrypt = require('bcrypt');
 
 const path = require('path');

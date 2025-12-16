@@ -1,15 +1,27 @@
 module.exports = {
-  root: true,
-  parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
+  env: {
+    browser: true,
+    node: true,
+    es2021: true
+  },
   extends: [
     'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'prettier',
-    'prettier/@typescript-eslint',
+    'prettier'
   ],
-  rules: {
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
-  },
+  overrides: [
+    {
+      files: [
+        '**/*.test.js',
+        '**/*.spec.js',
+        '**/__tests__/**/*.js',
+        '**/__mocks__/**/*.js'
+      ],
+      env: {
+        jest: true
+      }
+    }
+  ],
+  globals: {
+    Chart: 'readonly'
+  }
 };

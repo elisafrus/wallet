@@ -1,6 +1,5 @@
 const express = require('express');
 const profileRouter = express.Router();
-const db = require('../db');
 const userModel = require('../model/userModel');
 const multer = require('multer');
 const bcrypt = require('bcrypt');
