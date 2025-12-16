@@ -1,59 +1,59 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Wallet</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-<div class="icons">
-    <h1>Wallet</h1>
-    <div class="homeicon">
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="icons">
+      <h1>Wallet</h1>
+      <div class="homeicon">
         <a href="/homepage">
-            <img src="/frontend/assets/elements/home_icon.png" alt="Home icon">
+          <img src="/frontend/assets/elements/home_icon.png" alt="Home icon" />
         </a>
-    </div>
-    <div class="statisticsicon">
+      </div>
+      <div class="statisticsicon">
         <a href="/statistics">
-            <img src="/frontend/assets/elements/statistics_icon.png" alt="Statistics icon">
+          <img src="/frontend/assets/elements/statistics_icon.png" alt="Statistics icon" />
         </a>
-    </div>
-    <div class="profileicon">
+      </div>
+      <div class="profileicon">
         <a href="/profile">
-            <img src="/frontend/assets/elements/profile_icon.png" alt="Profile icon">
+          <img src="/frontend/assets/elements/profile_icon.png" alt="Profile icon" />
         </a>
+      </div>
     </div>
-</div>
-<div class="mainpagecontainer">
-    <h2>Profile</h2>
-    <form id="edit" action="/update_profile" method="post" enctype="multipart/form-data">
+    <div class="mainpagecontainer">
+      <h2>Profile</h2>
+      <form id="edit" action="/update_profile" method="post" enctype="multipart/form-data">
         <div class="circle" id="circle">
-            <img id="photo" alt="Photo">
+          <img id="photo" alt="Photo" />
         </div>
         <div class="mainpageinfo">
-            <input type="text" id="fullname" name="fullname">
-            <input type="email" id="email" name="email">
-            <input type="password" id="password" name="password" placeholder="password" required>
-            <!-- Додано приховане поле для URL аватарки -->
-            <div class="photochange">
-                <label for="avatar" class="avatar">Choose photo</label>
-                <input id="avatar" type="file" name="avatar">
-                <button type="button" id="deletePhotoButton">Delete photo</button>
-            </div>
-            <button id="saveProfileBtn" type="submit">Save changes</button>
+          <input type="text" id="fullname" name="fullname" />
+          <input type="email" id="email" name="email" />
+          <input type="password" id="password" name="password" placeholder="password" required />
+          <!-- Додано приховане поле для URL аватарки -->
+          <div class="photochange">
+            <label for="avatar" class="avatar">Choose photo</label>
+            <input id="avatar" type="file" name="avatar" />
+            <button type="button" id="deletePhotoButton">Delete photo</button>
+          </div>
+          <button id="saveProfileBtn" type="submit">Save changes</button>
         </div>
-    </form>
-</div>
-<div class="avataricon">
-    <div class="avatar-container">
-        <img id="user-avatar" alt="User Avatar">
+      </form>
     </div>
-</div>
-<div id="logout-popup" class="logout-popup">
-    <button id="logout-button">Log out</button>
-</div>
-<script src="script.js"></script>
-</body>
+    <div class="avataricon">
+      <div class="avatar-container">
+        <img id="user-avatar" alt="User Avatar" />
+      </div>
+    </div>
+    <div id="logout-popup" class="logout-popup">
+      <button id="logout-button">Log out</button>
+    </div>
+    <script src="script.js"></script>
+  </body>
 </html>

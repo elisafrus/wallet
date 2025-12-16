@@ -81,9 +81,9 @@ statisticsRouter.get('/expenses-by-category', (req, res) => {
       return;
     }
 
-    const expensesByCategory = rows.map(row => ({
+    const expensesByCategory = rows.map((row) => ({
       category: row.category,
-      total_amount: row.total_amount
+      total_amount: row.total_amount,
     }));
     res.json({ expensesByCategory });
   });
@@ -98,23 +98,19 @@ statisticsRouter.get('/expenses-list-by-category/:category', (req, res) => {
     query += ` AND date BETWEEN '${dateFilter.startDate}' AND '${dateFilter.endDate}'`;
   }
 
-  db.query(
-    query,
-    [category],
-    (error, rows) => {
-      if (error) {
-        console.error('SQL error', error);
-        res.status(500).json({ error: 'Server error' });
-        return;
-      }
-
-      const expensesListByCategory = rows.map(row => ({
-        amount: row.amount,
-        date: row.date
-      }));
-      res.json({ expensesListByCategory });
+  db.query(query, [category], (error, rows) => {
+    if (error) {
+      console.error('SQL error', error);
+      res.status(500).json({ error: 'Server error' });
+      return;
     }
-  );
+
+    const expensesListByCategory = rows.map((row) => ({
+      amount: row.amount,
+      date: row.date,
+    }));
+    res.json({ expensesListByCategory });
+  });
 });
 
 statisticsRouter.get('/expenses-by-date', (req, res) => {
@@ -134,15 +130,14 @@ statisticsRouter.get('/expenses-by-date', (req, res) => {
       return;
     }
 
-    const expensesByDate = rows.map(row => ({
+    const expensesByDate = rows.map((row) => ({
       year: row.year,
       month: row.month,
-      total_month_amount: row.total_month_amount
+      total_month_amount: row.total_month_amount,
     }));
     res.json({ expensesByDate });
   });
 });
-
 
 statisticsRouter.get('/income-by-date', (req, res) => {
   const user_id = req.session.user_id;
@@ -161,10 +156,10 @@ statisticsRouter.get('/income-by-date', (req, res) => {
       return;
     }
 
-    const incomeByDate = rows.map(row => ({
+    const incomeByDate = rows.map((row) => ({
       year: row.year,
       month: row.month,
-      total_month_amount: row.total_month_amount
+      total_month_amount: row.total_month_amount,
     }));
     res.json({ incomeByDate });
   });
@@ -192,7 +187,6 @@ statisticsRouter.get('/statistics/avatar', (req, res) => {
 });
 
 statisticsRouter.get('/logout', (req, res) => {
-
   req.session.destroy((err) => {
     if (err) {
       console.log(err);

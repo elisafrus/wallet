@@ -27,7 +27,7 @@ loginRouter.post('/', (req, res) => {
     if (err) throw err;
 
     if (results.length === 0) {
-      res.redirect('/login?Error=true')
+      res.redirect('/login?Error=true');
       return;
     }
 
@@ -39,7 +39,7 @@ loginRouter.post('/', (req, res) => {
         req.session.user_id = results[0].id;
         res.redirect('/homepage');
       } else {
-        res.redirect('/login?Error=true')
+        res.redirect('/login?Error=true');
       }
     });
   });

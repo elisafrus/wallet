@@ -24,14 +24,18 @@ homepageRouter.post('/income', (req, res) => {
     return;
   }
 
-  db.query('INSERT INTO income (amount, date, user_id) VALUES (?, ?, ?)', [incomeamount, incomedate, user_id], (err) => {
-    if (err) {
-      console.error('SQL error' + err.message);
-      res.status(500).send('Server error');
-      return;
-    }
-    res.redirect(req.get('referer'));
-  });
+  db.query(
+    'INSERT INTO income (amount, date, user_id) VALUES (?, ?, ?)',
+    [incomeamount, incomedate, user_id],
+    (err) => {
+      if (err) {
+        console.error('SQL error' + err.message);
+        res.status(500).send('Server error');
+        return;
+      }
+      res.redirect(req.get('referer'));
+    },
+  );
 });
 
 homepageRouter.post('/expenses', (req, res) => {
@@ -43,14 +47,18 @@ homepageRouter.post('/expenses', (req, res) => {
     return;
   }
 
-  db.query('INSERT INTO expenses (amount, date, category, user_id) VALUES (?, ?, ?, ?)', [expensesamount, expensesdate, expensescategory, user_id], (err) => {
-    if (err) {
-      console.error('SQL error' + err.message);
-      res.status(500).send('Server error');
-      return;
-    }
-    res.redirect(req.get('referer'));
-  });
+  db.query(
+    'INSERT INTO expenses (amount, date, category, user_id) VALUES (?, ?, ?, ?)',
+    [expensesamount, expensesdate, expensescategory, user_id],
+    (err) => {
+      if (err) {
+        console.error('SQL error' + err.message);
+        res.status(500).send('Server error');
+        return;
+      }
+      res.redirect(req.get('referer'));
+    },
+  );
 });
 
 homepageRouter.get('/account-balance', (req, res) => {
@@ -63,7 +71,7 @@ homepageRouter.get('/account-balance', (req, res) => {
     (error, rows) => {
       const value = rows[0]['income_sum'] - rows[0]['expenses_sum'];
       res.send(JSON.stringify({ value }));
-    }
+    },
   );
 });
 
@@ -78,11 +86,11 @@ homepageRouter.get('/recent-transactions', (req, res) => {
         ORDER BY date DESC, id DESC`,
     (error, rows) => {
       if (error) {
-        res.status(500).send(JSON.stringify({ error: "Server error" }));
+        res.status(500).send(JSON.stringify({ error: 'Server error' }));
         return;
       }
       res.send(JSON.stringify({ transactions: rows }));
-    }
+    },
   );
 });
 
@@ -180,7 +188,6 @@ homepageRouter.get('/homepage/avatar', (req, res) => {
 });
 
 homepageRouter.get('/logout', (req, res) => {
-
   req.session.destroy((err) => {
     if (err) {
       console.log(err);

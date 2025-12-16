@@ -3,7 +3,7 @@ const profileRouter = express.Router();
 const db = require('./db');
 const multer = require('multer');
 const bcrypt = require('bcrypt');
-const fs = require("fs");
+const fs = require('fs');
 
 const path = require('path');
 const storage = multer.memoryStorage();
@@ -28,16 +28,15 @@ profileRouter.get('/profile/user-info', (req, res) => {
     `SELECT avatar, fullname, email, password FROM users WHERE id = ${user_id}`,
     (error, rows) => {
       if (error) {
-        res.status(500).send(JSON.stringify({ error: "Server error" }));
+        res.status(500).send(JSON.stringify({ error: 'Server error' }));
         return;
       }
       res.send(JSON.stringify({ user_info: rows[0] }));
-    }
+    },
   );
 });
 
 profileRouter.post('/update_profile', upload.single('avatar'), (req, res) => {
-
   const { fullname, email, password } = req.body;
   const user_id = req.session.user_id;
   const hashedPassword = bcrypt.hashSync(password, 8);
@@ -49,15 +48,19 @@ profileRouter.post('/update_profile', upload.single('avatar'), (req, res) => {
 
   const avatarUrl = `http://localhost:3000/${filePath}`;
 
-  db.query('UPDATE users SET fullname = ?, email = ?, password = ?, avatar = ? WHERE id = ?', [fullname, email, hashedPassword, avatarUrl, user_id], (error) => {
-    if (error) {
-      console.error('SQL error', error);
-      res.status(500).json({ message: 'Server error' });
-      return;
-    }
-    console.log('User profile updated successfully');
-    res.redirect('/profile');
-  });
+  db.query(
+    'UPDATE users SET fullname = ?, email = ?, password = ?, avatar = ? WHERE id = ?',
+    [fullname, email, hashedPassword, avatarUrl, user_id],
+    (error) => {
+      if (error) {
+        console.error('SQL error', error);
+        res.status(500).json({ message: 'Server error' });
+        return;
+      }
+      console.log('User profile updated successfully');
+      res.redirect('/profile');
+    },
+  );
 });
 
 profileRouter.get('/profile/avatar', (req, res) => {
@@ -82,7 +85,6 @@ profileRouter.get('/profile/avatar', (req, res) => {
 });
 
 profileRouter.get('/logout', (req, res) => {
-
   req.session.destroy((err) => {
     if (err) {
       console.log(err);
