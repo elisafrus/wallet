@@ -21,7 +21,7 @@ if (process.env.NODE_ENV !== 'test' && !process.env.CI) {
   console.log('Skipping MySQL connection in CI/Test environment.');
   connection = {
     query: (sql, callback) => callback(new Error('DB connection is stubbed in test mode')),
-    end: () => {}
+    end: () => {},
   };
 }
 
