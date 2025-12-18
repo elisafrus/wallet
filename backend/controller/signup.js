@@ -1,34 +1,30 @@
 const express = require('express');
 const signupRouter = express.Router();
-const userModel = require('../model/userModel');
-const bcrypt = require('bcrypt');
-
+const authService = require('../service/authService'); // шлях до сервісу
 const path = require('path');
-
-signupRouter.use(express.static(path.join(__dirname, '..')));
-
-signupRouter.use(express.static(path.join(__dirname, '..', 'frontend')));
 
 signupRouter.use(express.static(path.join(__dirname, '..', 'frontend', 'signup')));
 
 signupRouter.get('/', (req, res) => {
-  const filePath = path.join(__dirname, '..', 'frontend', 'signup', 'index.html');
-  res.sendFile(filePath);
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'signup', 'index.html'));
 });
 
-signupRouter.post('/', (req, res) => {
+signupRouter.post('/', async (req, res) => {
   const { fullname, email, password } = req.body;
 
-  const hashedPassword = bcrypt.hashSync(password, 8);
+  if (!fullname || !email || !password) {
+    return res.redirect('/signup?Error=empty_fields');
+  }
 
-  userModel.createUser(fullname, email, hashedPassword, (err) => {
-    if (err) {
-      console.error(err);
-      res.redirect('/signup?Error=true');
-    } else {
-      res.redirect('/login');
-    }
-  });
+  try {
+    await authService.registerUser(fullname, email, password);
+
+    res.redirect('/login');
+
+  } catch (err) {
+    console.error('Signup error:', err);
+    res.redirect('/signup?Error=true');
+  }
 });
 
 module.exports = signupRouter;

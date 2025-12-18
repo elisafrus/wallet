@@ -1,151 +1,82 @@
 const express = require('express');
 const homepageRouter = express.Router();
-const transactionModel = require('../model/transactionModel');
+const transactionService = require('../service/transactionService');
 const userModel = require('../model/userModel');
-
 const path = require('path');
-
-homepageRouter.use(express.static(path.join(__dirname, '..')));
-
-homepageRouter.use(express.static(path.join(__dirname, '..', 'frontend')));
 
 homepageRouter.use(express.static(path.join(__dirname, '..', 'frontend', 'homepage')));
 
 homepageRouter.get('/', (req, res) => {
-  const filePath = path.join(__dirname, '..', 'frontend', 'homepage', 'index.html');
-  res.sendFile(filePath);
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'homepage', 'index.html'));
 });
 
-homepageRouter.post('/income', (req, res) => {
+homepageRouter.post('/income', async (req, res) => {
   const { incomeamount, incomedate } = req.body;
-  const user_id = req.session.user_id;
+  const userId = req.session.user_id;
 
-  if (!incomeamount || !incomedate) {
-    res.status(400).send('Missing required fields');
-    return;
-  }
-
-  transactionModel.addIncome(incomeamount, incomedate, user_id, (err) => {
-    if (err) {
-      console.error('Error adding income:', err.message);
-      res.status(500).send('Server error');
-      return;
-    }
-    res.redirect(req.get('referer'));
-  });
-});
-
-homepageRouter.post('/expenses', (req, res) => {
-  const { expensesamount, expensesdate, expensescategory } = req.body;
-  const user_id = req.session.user_id;
-
-  if (!expensesamount || !expensesdate || !expensescategory) {
-    res.status(400).send('Missing required fields');
-    return;
-  }
-
-  transactionModel.addExpense(expensesamount, expensesdate, expensescategory, user_id, (err) => {
-    if (err) {
-      console.error('Error adding expense:', err.message);
-      res.status(500).send('Server error');
-      return;
-    }
-    res.redirect(req.get('referer'));
-  });
-});
-
-homepageRouter.get('/account-balance', (req, res) => {
-  const user_id = req.session.user_id;
-
-  transactionModel.getAccountBalance(user_id, (error, balance) => {
-    if (error) {
-      console.error('Model error:', error);
-      return res.status(500).send(JSON.stringify({ error: 'Server error' }));
-    }
-    res.send(JSON.stringify({ value: balance }));
-  });
-});
-
-homepageRouter.get('/recent-transactions', (req, res) => {
-  const user_id = req.session.user_id;
-
-  transactionModel.getRecentTransactions(user_id, (error, transactions) => {
-    if (error) {
-      console.error('Model error:', error);
-      res.status(500).send(JSON.stringify({ error: 'Server error' }));
-      return;
-    }
-    res.send(JSON.stringify({ transactions: transactions }));
-  });
-});
-
-homepageRouter.delete('/homepage/transactions/:id/delete/:type', (req, res) => {
-  const transactionId = req.params.id;
-  const transactionType = req.params.type;
-
-  if (transactionType !== 'income' && transactionType !== 'expenses') {
-    res.status(400).json({ error: 'Incorrect type of transaction' });
-    return;
-  }
-
-  transactionModel.deleteTransaction(transactionId, transactionType, (error) => {
-    if (error) {
-      console.error('Model error', error);
-      res.status(500).json({ error: 'Server error' });
-      return;
-    }
-
-    if (transactionType === 'income') {
-      res.status(200).json({ message: 'Income transaction deleted successfully' });
-    } else {
-      res.status(200).json({ message: 'Expenses transaction deleted successfully' });
-    }
-  });
-});
-
-homepageRouter.put('/homepage/transactions/:id/edit/:type', async (req, res) => {
-  const { type, id } = req.params;
-  const { amount, date, category } = req.body;
+  if (!incomeamount || !incomedate) return res.status(400).send('Missing fields');
 
   try {
-    if (type === 'income') {
-      await transactionModel.updateIncomeTransaction(id, amount, date);
-    } else if (type === 'expenses') {
-      await transactionModel.updateExpenseTransaction(id, amount, date, category);
-    } else {
-      return res.status(400).send('Incorrect transaction type');
-    }
-    res.status(200).send('Transaction edited successfully');
-  } catch (error) {
-    console.error('Model error:', error);
+    await transactionService.createIncome(incomeamount, incomedate, userId);
+    res.redirect(req.get('referer'));
+  } catch (err) {
     res.status(500).send('Server error');
   }
 });
 
-homepageRouter.get('/homepage/avatar', (req, res) => {
-  const user_id = req.session.user_id;
+homepageRouter.post('/expenses', async (req, res) => {
+  const { expensesamount, expensesdate, expensescategory } = req.body;
+  const userId = req.session.user_id;
 
-  userModel.getUserAvatar(user_id, (err, avatarUrl) => {
-    if (err) {
-      console.error('Model error', err);
-      return res.status(500).json({ error: 'Server error' });
-    }
-    if (!avatarUrl) {
-      return res.status(404).json({ error: 'Image not found' });
-    }
+  if (!expensesamount || !expensesdate || !expensescategory) return res.status(400).send('Missing fields');
 
-    res.json({ avatarUrl: avatarUrl });
-  });
+  try {
+    await transactionService.createExpense(expensesamount, expensesdate, expensescategory, userId);
+    res.redirect(req.get('referer'));
+  } catch (err) {
+    res.status(500).send('Server error');
+  }
+});
+
+homepageRouter.get('/account-balance', async (req, res) => {
+  try {
+    const { balance } = await transactionService.getAccountSummary(req.session.user_id);
+    res.json({ value: balance });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+homepageRouter.get('/recent-transactions', async (req, res) => {
+  try {
+    const { transactions } = await transactionService.getAccountSummary(req.session.user_id);
+    res.json({ transactions });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+homepageRouter.delete('/homepage/transactions/:id/delete/:type', async (req, res) => {
+  try {
+    await transactionService.removeTransaction(req.params.id, req.params.type);
+    res.status(200).json({ message: 'Deleted successfully' });
+  } catch (err) {
+    const status = err.message === 'INVALID_TYPE' ? 400 : 500;
+    res.status(status).json({ error: err.message });
+  }
+});
+
+homepageRouter.put('/homepage/transactions/:id/edit/:type', async (req, res) => {
+  try {
+    await transactionService.updateTransaction(req.params.id, req.params.type, req.body);
+    res.status(200).send('Edited successfully');
+  } catch (err) {
+    res.status(500).send('Server error');
+  }
 });
 
 homepageRouter.get('/logout', (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.redirect('/');
-    }
-  });
+  req.session.destroy(() => res.redirect('/'));
 });
 
 module.exports = homepageRouter;
