@@ -28,7 +28,8 @@ homepageRouter.post('/expenses', async (req, res) => {
   const { expensesamount, expensesdate, expensescategory } = req.body;
   const userId = req.session.user_id;
 
-  if (!expensesamount || !expensesdate || !expensescategory) return res.status(400).send('Missing fields');
+  if (!expensesamount || !expensesdate || !expensescategory)
+    return res.status(400).send('Missing fields');
 
   try {
     await transactionService.createExpense(expensesamount, expensesdate, expensescategory, userId);

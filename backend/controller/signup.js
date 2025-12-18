@@ -20,7 +20,6 @@ signupRouter.post('/', async (req, res) => {
     await authService.registerUser(fullname, email, password);
 
     res.redirect('/login');
-
   } catch (err) {
     console.error('Signup error:', err);
     res.redirect('/signup?Error=true');

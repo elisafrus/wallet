@@ -28,7 +28,6 @@ loginRouter.post('/', async (req, res) => {
     } else {
       return res.redirect('/login?Error=true');
     }
-
   } catch (error) {
     console.error('Login error:', error);
     return res.status(500).send('Server error');

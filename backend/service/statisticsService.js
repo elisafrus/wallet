@@ -10,13 +10,14 @@ const getIncomeByDate = promisify(transactionModel.getIncomeByDate);
 
 class StatisticsService {
   async getFullStatistics(userId, startDate, endDate) {
-    const [incomeSum, expensesSum, expensesByCategory, expensesByDate, incomeByDate] = await Promise.all([
-      getIncomeSum(userId, startDate, endDate),
-      getExpensesSum(userId, startDate, endDate),
-      getExpensesByCategory(userId, startDate, endDate),
-      getExpensesByDate(userId, startDate, endDate),
-      getIncomeByDate(userId, startDate, endDate)
-    ]);
+    const [incomeSum, expensesSum, expensesByCategory, expensesByDate, incomeByDate] =
+      await Promise.all([
+        getIncomeSum(userId, startDate, endDate),
+        getExpensesSum(userId, startDate, endDate),
+        getExpensesByCategory(userId, startDate, endDate),
+        getExpensesByDate(userId, startDate, endDate),
+        getIncomeByDate(userId, startDate, endDate),
+      ]);
 
     return { incomeSum, expensesSum, expensesByCategory, expensesByDate, incomeByDate };
   }
