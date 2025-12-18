@@ -1,7 +1,6 @@
 const express = require('express');
 const statisticsRouter = express.Router();
 const statisticsService = require('../service/statisticsService');
-const userModel = require('../model/userModel');
 const path = require('path');
 
 statisticsRouter.use(express.static(path.join(__dirname, '..', 'frontend', 'statistics')));

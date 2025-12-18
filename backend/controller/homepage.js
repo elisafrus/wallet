@@ -1,7 +1,6 @@
 const express = require('express');
 const homepageRouter = express.Router();
 const transactionService = require('../service/transactionService');
-const userModel = require('../model/userModel');
 const path = require('path');
 
 homepageRouter.use(express.static(path.join(__dirname, '..', 'frontend', 'homepage')));
