@@ -9,9 +9,6 @@
     "configFile": "backend/jest.config.js",
     "enableFindRelatedTests": true
   },
-  "mutate": [
-    "backend/service/*.js",
-    "!backend/service/*.test.js"
-  ],
+  "mutate": ["backend/service/*.js", "!backend/service/*.test.js"],
   "thresholds": { "high": 80, "low": 60, "break": 0 }
 }
