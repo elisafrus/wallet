@@ -1,0 +1,53 @@
+name: CI Quality Check
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Check Commit Messages (Conventional Commits)
+        uses: wagoid/commitlint-github-action@v5
+
+      - name: Check Code Style (Prettier)
+        run: npx prettier --check .
+
+      - name: Static Analysis (Linter)
+        run: npm run lint
+
+      - name: Build Project
+        run: npm run build
+
+      - name: Run Tests
+        run: npx jest --testPathIgnorePatterns=backend/tests/e2e
+
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs: build_and_test
+    steps:
+      - name: Simulated Deployment
+        run: |
+          echo "Connecting to Stage Server..."
+          echo "Updating source code..."
+          echo "Restarting Node.js service..."
+          echo "Deployment successful! App is live at http://localhost:3000 (Local Stage)"
