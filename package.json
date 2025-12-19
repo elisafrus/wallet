@@ -51,6 +51,7 @@
     "bcrypt": "^6.0.0",
     "express": "^5.2.1",
     "express-session": "^1.18.2",
+    "multer": "^2.0.2",
     "mysql": "^2.18.1"
   }
 }
