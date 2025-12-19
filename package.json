@@ -32,6 +32,8 @@
   "homepage": "https://github.com/elisafrus/wallet#readme",
   "devDependencies": {
     "@playwright/test": "^1.57.0",
+    "@stryker-mutator/core": "^9.4.0",
+    "@stryker-mutator/jest-runner": "^9.4.0",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
     "eslint": "^8.57.1",

@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start:dev": "nodemon app.js"
+    "test": "jest",
+    "test:e2e": "npx playwright test",
+    "test:mutation": "stryker run"
   },
   "keywords": [],
   "author": "",

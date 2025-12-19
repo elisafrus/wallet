@@ -4,7 +4,6 @@ const { promisify } = require('util');
 
 const createUserPromise = promisify(userModel.createUser);
 
-module.exports = new AuthService();
 class AuthService {
   async authenticate(email, password) {
     const user = await new Promise((resolve, reject) => {

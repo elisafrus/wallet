@@ -22,7 +22,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'controller', 'uploads')
 
 app.use('/', routes);
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server started on http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(3000, () => console.log('Server running'));
+}
+
+module.exports = app;
